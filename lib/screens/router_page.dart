@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:photodatabase/tabbar.dart';
+import 'package:photodatabase/components/photo_database_tabbar.dart';
 
 const int tabCount = 3;
 const int turnsToRotateRight = 1;
@@ -8,14 +8,14 @@ const int turnsToRotateLeft = 3;
 // Список папок - Страница папки - Страница изображения
 // Таблица
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class RouterPage extends StatefulWidget {
+  const RouterPage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<RouterPage> createState() => _RouterPageState();
 }
 
-class _HomePageState extends State<HomePage>
+class _RouterPageState extends State<RouterPage>
     with SingleTickerProviderStateMixin, RestorationMixin {
   late TabController _tabController;
   RestorableInt tabIndex = RestorableInt(2);
@@ -55,58 +55,31 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final _isDesktop = isDesktop();
-    const verticalRotation = turnsToRotateLeft;
-    const revertVerticalRotation = turnsToRotateRight;
-    var tabBarView = Row(
+    var tabBarView = Column(
       children: [
-        Container(
-          width: 150,
-          alignment: Alignment.topCenter,
-          padding: const EdgeInsets.symmetric(vertical: 32),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RotatedBox(
-                quarterTurns: verticalRotation,
-                child: PhotoDatabaseTabBar(
-                  tabs: buildTabs(
-                    context: context,
-                    theme: theme,
-                    isVertical: true,
-                    tabController: _tabController,
-                  ).map(
-                    (widget) {
-                      return RotatedBox(
-                        child: widget,
-                        quarterTurns: revertVerticalRotation,
-                      );
-                    },
-                  ).toList(),
-                  tabController: _tabController,
-                ),
-              ),
-            ],
-          ),
-        ),
         Expanded(
-          child: RotatedBox(
-            quarterTurns: verticalRotation,
-            child: TabBarView(
-              controller: _tabController,
-              children: _buildTabViews().map(
-                (widget) {
-                  return RotatedBox(
-                    child: widget,
-                    quarterTurns: revertVerticalRotation,
-                  );
-                },
-              ).toList(),
-            ),
+          child: TabBarView(
+            controller: _tabController,
+            children: _buildTabViews(),
           ),
         ),
       ],
     );
     return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: Container(
+          alignment: Alignment.topCenter,
+          child: PhotoDatabaseTabBar(
+            tabs: buildTabs(
+              context: context,
+              theme: theme,
+              isVertical: true,
+              tabController: _tabController,
+            ),
+            tabController: _tabController,
+          ),
+        ),
+      ),
       body: SafeArea(
         top: !_isDesktop,
         bottom: !_isDesktop,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:photodatabase/homepage.dart';
+import 'package:photodatabase/screens/router_page.dart';
 
 class PhotoDatabaseTabBar extends StatelessWidget {
   const PhotoDatabaseTabBar(
@@ -33,8 +33,8 @@ List<Widget> buildTabs({
   return [
     _Tab(
       theme: theme,
-      iconData: Icons.table_chart_outlined,
-      title: 'Union',
+      iconData: Icons.folder_outlined,
+      title: 'Folders',
       tabIndex: 0,
       tabController: tabController,
       isVertical: isVertical,
@@ -51,8 +51,8 @@ List<Widget> buildTabs({
     ),
     _Tab(
       theme: theme,
-      iconData: Icons.folder_outlined,
-      title: 'Folders',
+      iconData: Icons.table_chart_outlined,
+      title: 'Union',
       tabIndex: 2,
       tabController: tabController,
       isVertical: isVertical,
@@ -70,15 +70,13 @@ class _Tab extends StatefulWidget {
     required TabController tabController,
     required this.isVertical,
     required this.tabCount,
-  })  : titleText = Text(title, style: theme.textTheme.button),
-        isExpanded = tabController.index == tabIndex,
+  })  : isExpanded = tabController.index == tabIndex,
         icon = Icon(
           iconData,
           semanticLabel: title,
-          size: tabIndex == tabCount - 1 ? 40 : 30,
         );
 
-  final Text titleText;
+  // final Text titleText;
   final Icon icon;
   final bool isExpanded;
   final bool isVertical;
@@ -89,8 +87,6 @@ class _Tab extends StatefulWidget {
 }
 
 class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
-  late Animation<double> _titleSizeAnimation;
-  late Animation<double> _titleFadeAnimation;
   late Animation<double> _iconFadeAnimation;
   late AnimationController _controller;
 
@@ -98,12 +94,10 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-    _titleSizeAnimation = _controller.view;
-    _titleFadeAnimation = _controller.drive(CurveTween(curve: Curves.easeOut));
-    _iconFadeAnimation = _controller.drive(Tween<double>(begin: 0.6, end: 1));
+    _iconFadeAnimation = _controller.drive(Tween<double>(begin: 0.5, end: 1));
     if (widget.isExpanded) {
       _controller.value = 1;
     }
@@ -121,67 +115,20 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isVertical) {
-      return Column(
-        children: [
-          const SizedBox(height: 18),
-          FadeTransition(
-            opacity: _iconFadeAnimation,
-            child: widget.icon,
-          ),
-          const SizedBox(height: 12),
-          FadeTransition(
-            opacity: _titleFadeAnimation,
-            child: SizeTransition(
-              axis: Axis.vertical,
-              axisAlignment: -1,
-              sizeFactor: _titleSizeAnimation,
-              child: Center(
-                child: ExcludeSemantics(
-                  child: widget.titleText,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 18),
-        ],
-      );
-    }
-
-    // Calculate the width of each unexpanded tab by counting the number of
-    // units and dividing it into the screen width. Each unexpanded tab is 1
-    // unit, and there is always 1 expanded tab which is 1 unit + any extra
-    // space determined by the multiplier.
     final width = MediaQuery.of(context).size.width;
     const expandedTitleWidthMultiplier = 2;
     final unitWidth = width / (tabCount + expandedTitleWidthMultiplier);
 
     return ConstrainedBox(
       constraints: const BoxConstraints(minHeight: 56),
-      child: Row(
-        children: [
-          FadeTransition(
-            opacity: _iconFadeAnimation,
-            child: SizedBox(
-              width: unitWidth,
-              child: widget.icon,
-            ),
+      child: Expanded(
+        child: FadeTransition(
+          opacity: _iconFadeAnimation,
+          child: SizedBox(
+            width: unitWidth,
+            child: widget.icon,
           ),
-          FadeTransition(
-            opacity: _titleFadeAnimation,
-            child: SizeTransition(
-              axis: Axis.horizontal,
-              axisAlignment: -1,
-              sizeFactor: _titleSizeAnimation,
-              child: SizedBox(
-                width: unitWidth * expandedTitleWidthMultiplier,
-                child: Center(
-                  child: ExcludeSemantics(child: widget.titleText),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
