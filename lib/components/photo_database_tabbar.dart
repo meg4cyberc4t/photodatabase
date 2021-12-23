@@ -121,13 +121,11 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
 
     return ConstrainedBox(
       constraints: const BoxConstraints(minHeight: 56),
-      child: Expanded(
-        child: FadeTransition(
-          opacity: _iconFadeAnimation,
-          child: SizedBox(
-            width: unitWidth,
-            child: widget.icon,
-          ),
+      child: FadeTransition(
+        opacity: _iconFadeAnimation,
+        child: SizedBox(
+          width: unitWidth,
+          child: widget.icon,
         ),
       ),
     );

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:photodatabase/components/photo_database_tabbar.dart';
+import 'package:photodatabase/screens/folders_page.dart';
+import 'package:photodatabase/screens/images_page.dart';
+import 'package:photodatabase/screens/union_page.dart';
 
 const int tabCount = 3;
 const int turnsToRotateRight = 1;
 const int turnsToRotateLeft = 3;
-// Все изображения - Страница изображения
-// Список папок - Страница папки - Страница изображения
-// Таблица
 
 class RouterPage extends StatefulWidget {
   const RouterPage({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class RouterPage extends StatefulWidget {
 class _RouterPageState extends State<RouterPage>
     with SingleTickerProviderStateMixin, RestorationMixin {
   late TabController _tabController;
-  RestorableInt tabIndex = RestorableInt(2);
+  RestorableInt tabIndex = RestorableInt(1);
 
   @override
   String get restorationId => 'home_page';
@@ -55,15 +55,10 @@ class _RouterPageState extends State<RouterPage>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final _isDesktop = isDesktop();
-    var tabBarView = Column(
-      children: [
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: _buildTabViews(),
-          ),
-        ),
-      ],
+    var tabBarView = TabBarView(
+      physics: const PageScrollPhysics(),
+      controller: _tabController,
+      children: _buildTabViews(),
     );
     return Scaffold(
       appBar: AppBar(
@@ -95,21 +90,13 @@ class _RouterPageState extends State<RouterPage>
         ),
       ),
     );
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: const Text('Photo Database'),
-    //   ),
-    //   body: const Center(
-    //     child: Text('HomePage'),
-    //   ),
-    // );
   }
 
   List<Widget> _buildTabViews() {
     return const [
-      Scaffold(body: Center(child: Text('0'))),
-      Scaffold(body: Center(child: Text('1'))),
-      Scaffold(body: Center(child: Text('2'))),
+      FoldersPage(),
+      ImagesPage(),
+      UnionPage(),
     ];
   }
 }
