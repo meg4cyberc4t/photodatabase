@@ -144,6 +144,8 @@ class _TableItemButton extends StatelessWidget {
     return TableCell(
         child: InkWell(
       onTap: onPressed,
+      focusColor: Theme.of(context).focusColor,
+      hoverColor: Theme.of(context).hoverColor,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(

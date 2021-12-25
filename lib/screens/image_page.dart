@@ -21,60 +21,63 @@ class ImagePage extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           body = Center(
               child: PhotoDatabaseErrorWidget(snapshot.error.toString()));
-        } else if (snapshot.connectionState == ConnectionState.active) {
+        } else if (snapshot.connectionState == ConnectionState.active &&
+            snapshot.hasData) {
           var data = snapshot.data as Map;
           title = data['title'];
-          body = Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "ID: " + data['id'].toString(),
-                    style: Theme.of(context).textTheme.headline5,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                if (data['description'].isNotEmpty)
+          body = Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "Description: " + data['description'],
+                      "ID: " + data['id'].toString(),
                       style: Theme.of(context).textTheme.headline5,
                       textAlign: TextAlign.center,
                     ),
                   ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Loaded: " + data['load_datatime'],
-                    style: Theme.of(context).textTheme.headline5,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Last edit: " + data['last_edit_datatime'],
-                    style: Theme.of(context).textTheme.headline5,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Expanded(
-                  child: CachedNetworkImage(
-                    imageUrl: PhotoDatabaseApi.images.getShowLink(id),
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                            CircularProgressIndicator.adaptive(
-                                value: downloadProgress.progress),
-                    errorWidget: (context, url, error) => const Icon(
-                      Icons.warning_amber_rounded,
-                      color: Colors.yellow,
+                  if (data['description'].isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Description: " + data['description'],
+                        style: Theme.of(context).textTheme.headline5,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Loaded: " + data['load_datatime'],
+                      style: Theme.of(context).textTheme.headline5,
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Last edit: " + data['last_edit_datatime'],
+                      style: Theme.of(context).textTheme.headline5,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: CachedNetworkImage(
+                      imageUrl: PhotoDatabaseApi.images.getShowLink(id),
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                              CircularProgressIndicator.adaptive(
+                                  value: downloadProgress.progress),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.warning_amber_rounded,
+                        color: Colors.yellow,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         }
