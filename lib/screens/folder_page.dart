@@ -22,31 +22,33 @@ class FolderPage extends StatelessWidget {
         } else if (snapshot.hasData) {
           var data = snapshot.data as Map;
           title = data['title'];
-          body = Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "ID: ${data['id']}",
-                style: Theme.of(context).textTheme.headline5,
-                textAlign: TextAlign.center,
-              ),
-              if (data['description'].isNotEmpty)
+          body = Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 Text(
-                  "Description: ${data['description']}",
+                  "ID: ${data['id']}",
                   style: Theme.of(context).textTheme.headline5,
                   textAlign: TextAlign.center,
                 ),
-              Text(
-                "Create: ${data['create_datatime']}",
-                style: Theme.of(context).textTheme.headline5,
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                "Last edit:: ${data['last_edit_datatime']}",
-                style: Theme.of(context).textTheme.headline5,
-                textAlign: TextAlign.center,
-              ),
-            ],
+                if (data['description'].isNotEmpty)
+                  Text(
+                    "Description: ${data['description']}",
+                    style: Theme.of(context).textTheme.headline5,
+                    textAlign: TextAlign.center,
+                  ),
+                Text(
+                  "Create: ${data['create_datatime']}",
+                  style: Theme.of(context).textTheme.headline5,
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  "Last edit:: ${data['last_edit_datatime']}",
+                  style: Theme.of(context).textTheme.headline5,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           );
         }
         return Scaffold(
