@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photodatabase/api/api.dart';
+import 'package:photodatabase/api/error.dart';
+import 'package:photodatabase/widgets/snack_bar.dart';
 
 class CreateFolderPage extends StatefulWidget {
   const CreateFolderPage({Key? key}) : super(key: key);
@@ -78,17 +80,9 @@ class _CreateFolderPageState extends State<CreateFolderPage> {
                       await PhotoDatabaseApi.folders.create(
                           _titleController.text, _descriptionController.text);
                       Navigator.of(context).pop();
-                    } catch (err) {
-                      print(err);
-                      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //     content: SnackBar(
-                      //   dismissDirection: DismissDirection.down,
-                      //   content: Text(
-                      //     err.toString(),
-                      //     textAlign: TextAlign.center,
-                      //     style: Theme.of(context).textTheme.headline6,
-                      //   ),
-                      // )));
+                    } on PhotoDatabaseApiError catch (err) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          PhotodatabaseSnackBar(err: err).build(context));
                     }
                   },
                   color: Theme.of(context).primaryColor,

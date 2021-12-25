@@ -36,6 +36,10 @@ ThemeData buildTheme() {
       focusedBorder: InputBorder.none,
     ),
     visualDensity: VisualDensity.standard,
+    snackBarTheme: const SnackBarThemeData(
+      backgroundColor: PhotoDatabaseColors.primaryBackground,
+      contentTextStyle: TextStyle(color: Colors.white),
+    ),
   );
 }
 
