@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:photodatabase/api/longpolling.dart';
+import 'package:photodatabase/widgets/folder_item.dart';
 
 class FoldersPage extends StatefulWidget {
   const FoldersPage({
@@ -25,7 +26,26 @@ class _FoldersPageState extends State<FoldersPage>
           stream: PhotoDatabaseLongPoolingApi.getAllFolders(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Text(snapshot.data.toString());
+              var list = snapshot.data as List;
+              return GridView.count(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                padding: const EdgeInsets.all(10),
+                children: [
+                  ...list.map(
+                    (e) => FolderItem(
+                      id: e['id'],
+                      title: e['title'],
+                      description: e['description'],
+                      createDatetime: e['create_datatime'],
+                      lastEditDatetime: e['last_edit_datatime'],
+                    ),
+                  )
+                ],
+                scrollDirection: Axis.horizontal,
+              );
+              // return Text(snapshot.data.toString());
             }
             if (snapshot.hasError) {
               return Text(snapshot.error.toString());
