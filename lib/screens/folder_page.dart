@@ -86,12 +86,15 @@ class _FolderPageState extends State<FolderPage> {
                           controller: controller,
                         ),
                       ),
+                    )
+                  else
+                    const SizedBox(height: 10),
+                  if (cards.isNotEmpty)
+                    CupertinoButton(
+                      child: const Text("Unswipe"),
+                      color: Theme.of(context).primaryColor,
+                      onPressed: () => controller.unswipe(),
                     ),
-                  CupertinoButton(
-                    child: const Text("Unswipe"),
-                    color: Theme.of(context).primaryColor,
-                    onPressed: () => controller.unswipe(),
-                  ),
                 ],
               ),
             ),

@@ -4,11 +4,23 @@ import 'package:http/http.dart' as http;
 import 'package:photodatabase/api/methods.dart';
 
 class PhotoDatabaseLongPoolingApi {
-  static const String server = "http://db-learning.ithub.ru:1116";
+  static const String server = "http://192.168.0.118:1116";
+
+  // static const String server = "http://db-learning.ithub.ru:1116";
   static Stream getAllFolders([String? lastStateHash]) async* {
     while (true) {
       http.Response res = await http.get(
           Uri.parse(server + "/lp/folder/?last_state_hash=$lastStateHash"));
+      var data = errorMiddleware(jsonDecode(res.body));
+      lastStateHash = data['hash'];
+      yield data['state'];
+    }
+  }
+
+  static Stream getImages([String? lastStateHash]) async* {
+    while (true) {
+      http.Response res = await http
+          .get(Uri.parse(server + "/lp/image/?last_state_hash=$lastStateHash"));
       var data = errorMiddleware(jsonDecode(res.body));
       lastStateHash = data['hash'];
       yield data['state'];

@@ -4,7 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:photodatabase/api/error.dart';
 
 class PhotoDatabaseApi {
-  static const String server = "http://db-learning.ithub.ru:1116";
+  static const String server = "http://192.168.0.118:1116";
+
+  // static const String server = "http://db-learning.ithub.ru:1116";
   static _Folders get folders => const _Folders(server);
   static _Images get images => const _Images(server);
 }
@@ -40,5 +42,10 @@ class _Images {
   final String server;
   String getShowLink(id) {
     return server + "/api/image/$id/show";
+  }
+
+  dynamic getAll() async {
+    http.Response res = await http.get(Uri.parse(server + "/api/image"));
+    return __errorHandler(jsonDecode(res.body));
   }
 }

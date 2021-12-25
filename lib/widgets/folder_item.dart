@@ -35,15 +35,13 @@ class FolderItem extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.headline5?.copyWith(
-                    color: Theme.of(context).textTheme.headline4!.color),
+                style: Theme.of(context).textTheme.headline5,
                 textAlign: TextAlign.center,
               ),
               if (description.isNotEmpty)
                 Text(
                   description,
-                  style: Theme.of(context).textTheme.headline6?.copyWith(
-                      color: Theme.of(context).textTheme.headline4!.color),
+                  style: Theme.of(context).textTheme.headline6,
                   textAlign: TextAlign.center,
                 ),
             ],
