@@ -21,6 +21,11 @@ ThemeData buildTheme() {
       refreshBackgroundColor: PhotoDatabaseColors.cardBackground,
       circularTrackColor: PhotoDatabaseColors.primaryBackground,
     ),
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: PhotoDatabaseColors.primaryBackground,
+      selectionColor: PhotoDatabaseColors.primaryBackground,
+      selectionHandleColor: PhotoDatabaseColors.primaryBackground,
+    ),
     inputDecorationTheme: const InputDecorationTheme(
       labelStyle: TextStyle(
         color: PhotoDatabaseColors.gray,

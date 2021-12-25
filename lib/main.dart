@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:photodatabase/configs/build_text_theme.dart';
+import 'package:photodatabase/screens/create_folder_page.dart';
 import 'package:photodatabase/screens/router_page.dart';
 
 void main() {
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
         '/': (context) => const RouterPage(),
+        '/CreateFolderPage': (context) => const CreateFolderPage(),
       },
       // home: const HomePage(),
     );

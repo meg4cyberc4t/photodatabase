@@ -20,6 +20,15 @@ class _Folders {
   const _Folders(this.server);
   final String server;
 
+  Future<void> create(String title, String description) async {
+    http.Response res =
+        await http.post(Uri.parse(server + "/api/folder"), body: {
+      "title": title,
+      "description": description,
+    });
+    __errorHandler(jsonDecode(res.body));
+  }
+
   dynamic getAll() async {
     http.Response res = await http.get(Uri.parse(server + "/api/folder"));
     return __errorHandler(jsonDecode(res.body));

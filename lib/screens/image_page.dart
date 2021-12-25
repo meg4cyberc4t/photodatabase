@@ -44,7 +44,7 @@ class ImagePage extends StatelessWidget {
                       bottom: MediaQuery.of(context).size.height * 0.05),
                   child: (data['description'].isEmpty)
                       ? const Spacer()
-                      : Text("Description: " + data['description']),
+                      : Text(data['description']),
                 ),
               ),
             ),

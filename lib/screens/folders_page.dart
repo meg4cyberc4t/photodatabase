@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:photodatabase/api/longpolling.dart';
 import 'package:photodatabase/components/error_widget.dart';
+import 'package:photodatabase/configs/colors.dart';
 import 'package:photodatabase/widgets/folder_item.dart';
 
 class FoldersPage extends StatefulWidget {
@@ -47,7 +48,24 @@ class _FoldersPageState extends State<FoldersPage>
                       createDatetime: e['create_datatime'],
                       lastEditDatetime: e['last_edit_datatime'],
                     ),
-                  )
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: MaterialButton(
+                      focusColor: PhotoDatabaseColors.primaryBackground
+                          .withOpacity(0.5),
+                      hoverColor: PhotoDatabaseColors.primaryBackground
+                          .withOpacity(0.5),
+                      color: Theme.of(context).primaryColor,
+                      minWidth: 50,
+                      height: 50,
+                      child: const Center(
+                        child: Icon(Icons.add),
+                      ),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/CreateFolderPage'),
+                    ),
+                  ),
                 ],
                 scrollDirection: Axis.vertical,
               );
