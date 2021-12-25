@@ -38,6 +38,12 @@ class _UnionPageState extends State<UnionPage>
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Table(
+                  columnWidths: {
+                    0: FixedColumnWidth(
+                        MediaQuery.of(context).size.width * 0.15),
+                    1: const FlexColumnWidth(),
+                    2: const FlexColumnWidth(),
+                  },
                   border: TableBorder.all(
                     color: Theme.of(context).backgroundColor,
                     width: 2,
