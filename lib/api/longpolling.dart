@@ -7,9 +7,19 @@ class PhotoDatabaseLongPoolingApi {
   static const String server = "http://db-learning.ithub.ru:1116";
   static Stream getAllFolders([String? lastStateHash]) async* {
     while (true) {
+      http.Response res = await http.get(
+          Uri.parse(server + "/lp/folder/?last_state_hash=$lastStateHash"));
+      var data = errorMiddleware(jsonDecode(res.body));
+      lastStateHash = data['hash'];
+      yield data['state'];
+    }
+  }
+
+  static Stream getFolder(int id, [String? lastStateHash]) async* {
+    while (true) {
       try {
-        http.Response res = await http.get(
-            Uri.parse(server + "/lp/folder/?last_state_hash=$lastStateHash"));
+        http.Response res = await http.get(Uri.parse(
+            server + "/lp/folder/$id/?last_state_hash=$lastStateHash"));
         var data = errorMiddleware(jsonDecode(res.body));
         lastStateHash = data['hash'];
         yield data['state'];

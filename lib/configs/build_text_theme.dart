@@ -16,6 +16,11 @@ ThemeData buildTheme() {
     primaryColor: PhotoDatabaseColors.primaryBackground,
     focusColor: PhotoDatabaseColors.primaryBackground,
     textTheme: _buildTextTheme(base.textTheme),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: PhotoDatabaseColors.primaryBackground,
+      refreshBackgroundColor: PhotoDatabaseColors.cardBackground,
+      circularTrackColor: PhotoDatabaseColors.primaryBackground,
+    ),
     inputDecorationTheme: const InputDecorationTheme(
       labelStyle: TextStyle(
         color: PhotoDatabaseColors.gray,

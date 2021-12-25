@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:photodatabase/api/longpolling.dart';
+import 'package:photodatabase/components/error_widget.dart';
 import 'package:photodatabase/widgets/folder_item.dart';
 
 class FoldersPage extends StatefulWidget {
@@ -21,14 +22,19 @@ class _FoldersPageState extends State<FoldersPage>
     super.build(context);
     return Scaffold(
       key: const PageStorageKey("folders"),
-      body: Center(
-        child: StreamBuilder(
-          stream: PhotoDatabaseLongPoolingApi.getAllFolders(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
+      body: StreamBuilder(
+        stream: PhotoDatabaseLongPoolingApi.getAllFolders(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const Center(child: CircularProgressIndicator.adaptive());
+            case ConnectionState.done:
+              return Center(
+                  child: PhotoDatabaseErrorWidget(snapshot.error.toString()));
+            case ConnectionState.active:
               var list = snapshot.data as List;
               return GridView.count(
-                crossAxisCount: 2,
+                crossAxisCount: MediaQuery.of(context).size.width ~/ 200,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
                 padding: const EdgeInsets.all(10),
@@ -43,16 +49,12 @@ class _FoldersPageState extends State<FoldersPage>
                     ),
                   )
                 ],
-                scrollDirection: Axis.horizontal,
+                scrollDirection: Axis.vertical,
               );
-              // return Text(snapshot.data.toString());
-            }
-            if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            }
-            return const Text('loading');
-          },
-        ),
+            case ConnectionState.none:
+              return const Center(child: Text('None'));
+          }
+        },
       ),
     );
   }

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:photodatabase/components/photo_database_tabbar.dart';
+import 'package:photodatabase/methods/is_desktop.dart';
 import 'package:photodatabase/screens/folders_page.dart';
 import 'package:photodatabase/screens/images_page.dart';
 import 'package:photodatabase/screens/union_page.dart';
-import 'package:platform_info/platform_info.dart';
 
 const int tabCount = 3;
-const int turnsToRotateRight = 1;
-const int turnsToRotateLeft = 3;
 
 class RouterPage extends StatefulWidget {
   const RouterPage({Key? key}) : super(key: key);
@@ -47,8 +45,6 @@ class _RouterPageState extends State<RouterPage>
     tabIndex.dispose();
     super.dispose();
   }
-
-  bool isDesktop() => Platform.I.isDesktop;
 
   @override
   Widget build(BuildContext context) {

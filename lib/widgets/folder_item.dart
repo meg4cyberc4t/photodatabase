@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:photodatabase/configs/colors.dart';
+import 'package:photodatabase/methods/custom_route.dart';
+import 'package:photodatabase/screens/folder_page.dart';
 
 class FolderItem extends StatelessWidget {
   const FolderItem({
@@ -24,24 +26,31 @@ class FolderItem extends StatelessWidget {
         focusColor: PhotoDatabaseColors.primaryBackground.withOpacity(0.5),
         hoverColor: PhotoDatabaseColors.primaryBackground.withOpacity(0.5),
         color: Colors.primaries[id % 10],
+        minWidth: 50,
+        height: 50,
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headline5?.copyWith(
+                    color: Theme.of(context).textTheme.headline4!.color),
+                textAlign: TextAlign.center,
               ),
               if (description.isNotEmpty)
                 Text(
                   description,
-                  style: Theme.of(context).textTheme.headline5?.copyWith(
+                  style: Theme.of(context).textTheme.headline6?.copyWith(
                       color: Theme.of(context).textTheme.headline4!.color),
+                  textAlign: TextAlign.center,
                 ),
             ],
           ),
         ),
-        onPressed: () {},
+        onPressed: () =>
+            Navigator.push(context, customRoute(FolderPage(id: id))),
       ),
     );
   }
