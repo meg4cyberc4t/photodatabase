@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:photodatabase/api/longpolling.dart';
+import 'package:photodatabase/components/error_widget.dart';
+import 'package:photodatabase/methods/custom_route.dart';
+import 'package:photodatabase/screens/folder_page.dart';
+import 'package:photodatabase/screens/image_page.dart';
 
 class UnionPage extends StatefulWidget {
   const UnionPage({
@@ -17,11 +22,129 @@ class _UnionPageState extends State<UnionPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return const Scaffold(
-      key: PageStorageKey("union"),
-      body: Center(
-        child: Text("Union"),
+    return Scaffold(
+      key: const PageStorageKey("union"),
+      body: StreamBuilder(
+        stream: PhotoDatabaseLongPoolingApi.getUnion(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const Center(child: CircularProgressIndicator.adaptive());
+            case ConnectionState.done:
+              return Center(
+                  child: PhotoDatabaseErrorWidget(snapshot.error.toString()));
+            case ConnectionState.active:
+              List data = snapshot.data as List;
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Table(
+                  border: TableBorder.all(
+                    color: Theme.of(context).backgroundColor,
+                    width: 2,
+                  ),
+                  children: [
+                    TableRow(children: [
+                      TableCell(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "#",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5
+                              ?.copyWith(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .color),
+                        ),
+                      )),
+                      TableCell(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Image",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5
+                              ?.copyWith(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .color),
+                          textAlign: TextAlign.start,
+                        ),
+                      )),
+                      TableCell(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Folder",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5
+                              ?.copyWith(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .color),
+                          textAlign: TextAlign.start,
+                        ),
+                      )),
+                    ]),
+                    ...data.map((row) => TableRow(children: [
+                          _TableItemButton(
+                            title: row['photo_id'].toString(),
+                            onPressed: null,
+                          ),
+                          _TableItemButton(
+                            title: row['photo_title'],
+                            onPressed: () => Navigator.push(
+                              context,
+                              customRoute(ImagePage(id: row['photo_id'])),
+                            ),
+                          ),
+                          _TableItemButton(
+                            title: row['folder_title'],
+                            onPressed: () => Navigator.push(
+                              context,
+                              customRoute(FolderPage(id: row['folder_id'])),
+                            ),
+                          ),
+                        ])),
+                  ],
+                ),
+              );
+            case ConnectionState.none:
+              return const Center(child: Text('None'));
+          }
+        },
       ),
     );
+  }
+}
+
+class _TableItemButton extends StatelessWidget {
+  const _TableItemButton({
+    Key? key,
+    required this.title,
+    required this.onPressed,
+  }) : super(key: key);
+  final String title;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return TableCell(
+        child: InkWell(
+      onTap: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.headline5,
+        ),
+      ),
+    ));
   }
 }

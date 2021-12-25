@@ -28,4 +28,28 @@ class PhotoDatabaseLongPoolingApi {
       }
     }
   }
+
+  static Stream getImage(int id, [String? lastStateHash]) async* {
+    while (true) {
+      try {
+        http.Response res = await http.get(Uri.parse(
+            server + "/lp/image/$id/?last_state_hash=$lastStateHash"));
+        var data = errorMiddleware(jsonDecode(res.body));
+        lastStateHash = data['hash'];
+        yield data['state'];
+      } catch (_) {
+        await Future.delayed(const Duration(seconds: 3));
+      }
+    }
+  }
+
+  static Stream getUnion([String? lastStateHash]) async* {
+    while (true) {
+      http.Response res = await http
+          .get(Uri.parse(server + "/lp/union?last_state_hash=$lastStateHash"));
+      var data = errorMiddleware(jsonDecode(res.body));
+      lastStateHash = data['hash'];
+      yield data['state'];
+    }
+  }
 }

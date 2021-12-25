@@ -19,6 +19,7 @@ class _FoldersPageState extends State<FoldersPage>
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width);
     super.build(context);
     return Scaffold(
       key: const PageStorageKey("folders"),
@@ -34,7 +35,7 @@ class _FoldersPageState extends State<FoldersPage>
             case ConnectionState.active:
               var list = snapshot.data as List;
               return GridView.count(
-                crossAxisCount: MediaQuery.of(context).size.width ~/ 200,
+                crossAxisCount: MediaQuery.of(context).size.width ~/ 150,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
                 padding: const EdgeInsets.all(10),
