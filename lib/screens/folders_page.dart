@@ -19,7 +19,6 @@ class _FoldersPageState extends State<FoldersPage>
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width);
     super.build(context);
     return Scaffold(
       key: const PageStorageKey("folders"),

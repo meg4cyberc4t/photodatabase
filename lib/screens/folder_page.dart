@@ -19,64 +19,32 @@ class FolderPage extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           body = Center(
               child: PhotoDatabaseErrorWidget(snapshot.error.toString()));
-        } else if (snapshot.connectionState == ConnectionState.active) {
+        } else if (snapshot.hasData) {
           var data = snapshot.data as Map;
           title = data['title'];
           body = Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "ID: ",
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  Text(
-                    data['id'].toString(),
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
+              Text(
+                "ID: ${data['id']}",
+                style: Theme.of(context).textTheme.headline5,
+                textAlign: TextAlign.center,
               ),
               if (data['description'].isNotEmpty)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Description: ",
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    Text(
-                      data['description'],
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ],
+                Text(
+                  "Description: ${data['description']}",
+                  style: Theme.of(context).textTheme.headline5,
+                  textAlign: TextAlign.center,
                 ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Create: ",
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  Text(
-                    data['create_datatime'],
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
+              Text(
+                "Create: ${data['create_datatime']}",
+                style: Theme.of(context).textTheme.headline5,
+                textAlign: TextAlign.center,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Last edit: ",
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  Text(
-                    data['last_edit_datatime'],
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
+              Text(
+                "Last edit:: ${data['last_edit_datatime']}",
+                style: Theme.of(context).textTheme.headline5,
+                textAlign: TextAlign.center,
               ),
             ],
           );
