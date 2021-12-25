@@ -37,7 +37,7 @@ class PhotoDatabaseLongPoolingApi {
         var data = errorMiddleware(jsonDecode(res.body));
         lastStateHash = data['hash'];
         yield data['state'];
-      } catch (_) {
+      } catch (err) {
         await Future.delayed(const Duration(seconds: 3));
       }
     }
