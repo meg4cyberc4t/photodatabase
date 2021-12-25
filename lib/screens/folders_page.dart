@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photodatabase/api/longpolling.dart';
 
 class FoldersPage extends StatefulWidget {
   const FoldersPage({
@@ -17,10 +18,21 @@ class _FoldersPageState extends State<FoldersPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return const Scaffold(
-      key: PageStorageKey("folders"),
+    return Scaffold(
+      key: const PageStorageKey("folders"),
       body: Center(
-        child: Text("Folders"),
+        child: StreamBuilder(
+          stream: PhotoDatabaseLongPoolingApi.getAllFolders(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Text(snapshot.data.toString());
+            }
+            if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+            return const Text('loading');
+          },
+        ),
       ),
     );
   }

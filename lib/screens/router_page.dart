@@ -3,6 +3,7 @@ import 'package:photodatabase/components/photo_database_tabbar.dart';
 import 'package:photodatabase/screens/folders_page.dart';
 import 'package:photodatabase/screens/images_page.dart';
 import 'package:photodatabase/screens/union_page.dart';
+import 'package:platform_info/platform_info.dart';
 
 const int tabCount = 3;
 const int turnsToRotateRight = 1;
@@ -47,9 +48,7 @@ class _RouterPageState extends State<RouterPage>
     super.dispose();
   }
 
-  bool isDesktop() {
-    return true;
-  }
+  bool isDesktop() => Platform.I.isDesktop;
 
   @override
   Widget build(BuildContext context) {
@@ -62,22 +61,26 @@ class _RouterPageState extends State<RouterPage>
     );
     return Scaffold(
       appBar: AppBar(
+        primary: true,
         flexibleSpace: Container(
           alignment: Alignment.topCenter,
-          child: PhotoDatabaseTabBar(
-            tabs: buildTabs(
-              context: context,
-              theme: theme,
-              isVertical: true,
+          child: SafeArea(
+            top: !_isDesktop,
+            child: PhotoDatabaseTabBar(
+              tabs: buildTabs(
+                context: context,
+                theme: theme,
+                isVertical: true,
+                tabController: _tabController,
+              ),
               tabController: _tabController,
             ),
-            tabController: _tabController,
           ),
         ),
       ),
       body: SafeArea(
         top: !_isDesktop,
-        bottom: !_isDesktop,
+        // bottom: !_isDesktop,
         child: Theme(
           data: theme.copyWith(
             splashColor: Colors.transparent,
