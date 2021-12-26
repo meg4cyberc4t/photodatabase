@@ -36,6 +36,23 @@ class _Folders {
     http.Response res = await http.get(Uri.parse(server + "/api/folder/$id"));
     return errorMiddleware(jsonDecode(res.body));
   }
+
+  Future<void> addImage(int id, int imageid) async {
+    await http.post(Uri.parse(server + "/api/image/$imageid/link/$id"));
+  }
+
+  Future<void> edit(int id, String title, String description) async {
+    await http.post(Uri.parse(server + "/api/folder/$id/edit"), body: {
+      "title": title,
+      "description": description,
+    });
+  }
+
+  Future<void> delete(int id) async {
+    http.Response res =
+        await http.post(Uri.parse(server + "/api/folder/$id/delete"));
+    errorMiddleware(jsonDecode(res.body));
+  }
 }
 
 class _Images {
@@ -48,6 +65,12 @@ class _Images {
   Future getById(int id) async {
     http.Response res = await http.get(Uri.parse(server + "/api/image/$id"));
     return errorMiddleware(jsonDecode(res.body));
+  }
+
+  Future<void> delete(int id) async {
+    http.Response res =
+        await http.post(Uri.parse(server + "/api/image/$id/delete"));
+    errorMiddleware(jsonDecode(res.body));
   }
 
   Future<void> create(XFile xFile, String title, String description) async {
@@ -78,5 +101,11 @@ class _Images {
   dynamic getAll() async {
     http.Response res = await http.get(Uri.parse(server + "/api/image"));
     return errorMiddleware(jsonDecode(res.body));
+  }
+
+  void edit(int id, String title) async {
+    await http.post(Uri.parse(server + "/api/image/$id/edit"), body: {
+      "title": title,
+    });
   }
 }

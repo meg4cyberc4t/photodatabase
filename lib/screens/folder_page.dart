@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photodatabase/api/api.dart';
 import 'package:photodatabase/components/error_widget.dart';
+import 'package:photodatabase/methods/custom_route.dart';
+import 'package:photodatabase/screens/edit_folder_page.dart';
 
 class FolderPage extends StatefulWidget {
   const FolderPage({Key? key, required this.id}) : super(key: key);
@@ -22,6 +24,8 @@ class _FolderPageState extends State<FolderPage> {
       future: PhotoDatabaseApi.folders.getById(widget.id),
       builder: (context, snapshot) {
         String title = "Loading";
+        String description = "";
+
         Widget body = const Center(child: CircularProgressIndicator.adaptive());
         if (snapshot.hasError) {
           body = Center(
@@ -43,6 +47,8 @@ class _FolderPageState extends State<FolderPage> {
             ));
           }
           title = data['title'];
+          description = data['description'];
+
           body = SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Padding(
@@ -70,6 +76,7 @@ class _FolderPageState extends State<FolderPage> {
                         child: AppinioSwiper(
                           cards: cards,
                           controller: controller,
+                          allowUnswipe: true,
                         ),
                       ),
                     )
@@ -87,10 +94,45 @@ class _FolderPageState extends State<FolderPage> {
           );
         } else {
           title = "Loading";
+          description = "";
           body = const Center(child: CircularProgressIndicator.adaptive());
         }
         return Scaffold(
-          appBar: AppBar(title: Text(title)),
+          appBar: AppBar(
+            title: Text(title),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.link_outlined),
+                onPressed: () async {
+                  final int? id = await Navigator.of(context)
+                      .pushNamed('/SelectImagePage') as int?;
+                  if (id != null) {
+                    PhotoDatabaseApi.folders.addImage(widget.id, id);
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () async {
+                  var check = await Navigator.of(context)
+                      .push(customRoute(EditFolderPage(
+                    title: title,
+                    description: description,
+                  )));
+                  PhotoDatabaseApi.folders.edit(widget.id, check[0], check[1]);
+                  Navigator.of(context).pop();
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () async {
+                  await PhotoDatabaseApi.folders.delete(widget.id);
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
           body: body,
         );
       },

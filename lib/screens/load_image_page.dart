@@ -20,7 +20,7 @@ class _LoadImagePageState extends State<LoadImagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Create folder"),
+        title: const Text("Load image"),
       ),
       body: Center(
         child: Padding(

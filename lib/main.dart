@@ -3,6 +3,7 @@ import 'package:photodatabase/configs/build_text_theme.dart';
 import 'package:photodatabase/screens/create_folder_page.dart';
 import 'package:photodatabase/screens/load_image_page.dart';
 import 'package:photodatabase/screens/router_page.dart';
+import 'package:photodatabase/screens/select_image_page.dart';
 
 void main() {
   // GoogleFonts.config.allowRuntimeFetching = false;
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const RouterPage(),
         '/CreateFolderPage': (context) => const CreateFolderPage(),
         '/LoadImagePage': (context) => const LoadImagePage(),
+        '/SelectImagePage': (context) => const SelectImagePage(),
       },
       // home: const HomePage(),
     );

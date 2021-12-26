@@ -9,10 +9,11 @@ class ImagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String title;
     return FutureBuilder(
       future: PhotoDatabaseApi.images.getById(id),
       builder: (context, snapshot) {
-        String title = "Loading";
+        title = "Loading";
         Widget body = const Center(child: CircularProgressIndicator.adaptive());
         if (snapshot.hasError) {
           body = Center(
@@ -35,7 +36,18 @@ class ImagePage extends StatelessWidget {
           );
         }
         return Scaffold(
-          appBar: AppBar(title: Text(title)),
+          appBar: AppBar(
+            title: Text(title),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () async {
+                  PhotoDatabaseApi.images.delete(id);
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
           body: body,
         );
       },
