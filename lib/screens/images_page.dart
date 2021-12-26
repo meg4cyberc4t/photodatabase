@@ -30,7 +30,7 @@ class _ImagesPageState extends State<ImagesPage>
       floatingActionButton: CupertinoButton(
         child: const Icon(Icons.file_upload_outlined),
         color: Theme.of(context).primaryColor,
-        onPressed: () {},
+        onPressed: () => Navigator.of(context).pushNamed('/LoadImagePage'),
       ),
       body: StreamBuilder(
         stream: PhotoDatabaseLongPoolingApi.getImages(),

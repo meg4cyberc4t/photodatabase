@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:photodatabase/api/methods.dart';
 
 class PhotoDatabaseLongPoolingApi {
+  // static const String server = "http://192.168.1.71:1116";
+
   static const String server = "http://192.168.0.118:1116";
 
   // static const String server = "http://db-learning.ithub.ru:1116";
