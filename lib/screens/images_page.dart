@@ -9,9 +9,7 @@ import 'package:photodatabase/screens/image_page.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class ImagesPage extends StatefulWidget {
-  const ImagesPage({
-    Key? key,
-  }) : super(key: key);
+  const ImagesPage({Key? key}) : super(key: key);
 
   @override
   State<ImagesPage> createState() => _ImagesPageState();
@@ -48,6 +46,8 @@ class _ImagesPageState extends State<ImagesPage>
                   onTap: () => Navigator.push(
                       context, customRoute(ImagePage(id: list[index]['id']))),
                   child: CachedNetworkImage(
+                    width: 300,
+                    fit: BoxFit.fitWidth,
                     cacheKey: list[index]['id'].toString(),
                     imageUrl:
                         PhotoDatabaseApi.images.getShowLink(list[index]['id']),
@@ -65,8 +65,9 @@ class _ImagesPageState extends State<ImagesPage>
                 padding: const EdgeInsets.all(10.0),
                 gridDelegate:
                     SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-                  crossAxisCount:
-                      MediaQuery.of(context).size.width > 300 ? 3 : 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  crossAxisCount: MediaQuery.of(context).size.width ~/ 300,
                 ),
               );
             case ConnectionState.none:

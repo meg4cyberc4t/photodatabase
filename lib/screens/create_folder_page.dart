@@ -77,12 +77,19 @@ class _CreateFolderPageState extends State<CreateFolderPage> {
                   child: const Text('Create'),
                   onPressed: () async {
                     try {
-                      await PhotoDatabaseApi.folders.create(
-                          _titleController.text, _descriptionController.text);
-                      Navigator.of(context).pop();
+                      if (_titleController.text.isNotEmpty) {
+                        await PhotoDatabaseApi.folders.create(
+                            _titleController.text, _descriptionController.text);
+                        Navigator.of(context).pop();
+                      }
                     } on PhotoDatabaseApiError catch (err) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          PhotodatabaseSnackBar(err: err).build(context));
+                          PhotodatabaseSnackBar(message: err.message)
+                              .build(context));
+                    } catch (err) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          PhotodatabaseSnackBar(message: err.toString())
+                              .build(context));
                     }
                   },
                   color: Theme.of(context).primaryColor,

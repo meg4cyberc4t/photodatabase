@@ -3,14 +3,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photodatabase/api/api.dart';
-import 'package:photodatabase/api/longpolling.dart';
 import 'package:photodatabase/components/error_widget.dart';
 
 class FolderPage extends StatefulWidget {
-  const FolderPage({
-    Key? key,
-    required this.id,
-  }) : super(key: key);
+  const FolderPage({Key? key, required this.id}) : super(key: key);
   final int id;
 
   @override
@@ -22,12 +18,12 @@ class _FolderPageState extends State<FolderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: PhotoDatabaseLongPoolingApi.getFolder(widget.id),
+    return FutureBuilder(
+      future: PhotoDatabaseApi.folders.getById(widget.id),
       builder: (context, snapshot) {
         String title = "Loading";
         Widget body = const Center(child: CircularProgressIndicator.adaptive());
-        if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.hasError) {
           body = Center(
               child: PhotoDatabaseErrorWidget(snapshot.error.toString()));
         } else if (snapshot.hasData) {
@@ -67,16 +63,6 @@ class _FolderPageState extends State<FolderPage> {
                       style: Theme.of(context).textTheme.headline5,
                       textAlign: TextAlign.center,
                     ),
-                  Text(
-                    "Create: ${data['create_datatime']}",
-                    style: Theme.of(context).textTheme.headline5,
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    "Last edit: ${data['last_edit_datatime']}",
-                    style: Theme.of(context).textTheme.headline5,
-                    textAlign: TextAlign.center,
-                  ),
                   if (cards.isNotEmpty)
                     Expanded(
                       child: SizedBox(
@@ -99,9 +85,11 @@ class _FolderPageState extends State<FolderPage> {
               ),
             ),
           );
+        } else {
+          title = "Loading";
+          body = const Center(child: CircularProgressIndicator.adaptive());
         }
         return Scaffold(
-          key: PageStorageKey("folder-${widget.id}"),
           appBar: AppBar(title: Text(title)),
           body: body,
         );

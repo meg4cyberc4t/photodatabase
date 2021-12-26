@@ -95,17 +95,24 @@ class _LoadImagePageState extends State<LoadImagePage> {
                   child: const Text('Load'),
                   onPressed: () async {
                     try {
-                      await PhotoDatabaseApi.images.create(
-                        image!,
-                        _titleController.text,
-                        _descriptionController.text,
-                      );
+                      if (_titleController.text.isNotEmpty) {
+                        await PhotoDatabaseApi.images.create(
+                          image!,
+                          _titleController.text,
+                          _descriptionController.text,
+                        );
+                        Navigator.of(context).pop();
+                      }
                     } on PhotoDatabaseApiError catch (err) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          PhotodatabaseSnackBar(err: err).build(context));
+                          PhotodatabaseSnackBar(message: err.message)
+                              .build(context));
                       return;
+                    } catch (err) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          PhotodatabaseSnackBar(message: err.toString())
+                              .build(context));
                     }
-                    Navigator.of(context).pop();
                   },
                   color: Theme.of(context).primaryColor,
                 ),

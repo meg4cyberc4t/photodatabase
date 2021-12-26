@@ -110,13 +110,19 @@ class _UnionPageState extends State<UnionPage>
                               customRoute(ImagePage(id: row['photo_id'])),
                             ),
                           ),
-                          _TableItemButton(
-                            title: row['folder_title'],
-                            onPressed: () => Navigator.push(
-                              context,
-                              customRoute(FolderPage(id: row['folder_id'])),
-                            ),
-                          ),
+                          if (row['folder_id'] != null)
+                            _TableItemButton(
+                              title: row['folder_title'].toString(),
+                              onPressed: () => Navigator.push(
+                                context,
+                                customRoute(FolderPage(id: row['folder_id'])),
+                              ),
+                            )
+                          else
+                            const _TableItemButton(
+                              title: '',
+                              onPressed: null,
+                            )
                         ])),
                   ],
                 ),

@@ -45,8 +45,7 @@ class _FoldersPageState extends State<FoldersPage>
                       id: e['id'],
                       title: e['title'],
                       description: e['description'],
-                      createDatetime: e['create_datatime'],
-                      lastEditDatetime: e['last_edit_datatime'],
+                      
                     ),
                   ),
                   ClipRRect(

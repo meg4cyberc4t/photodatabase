@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:photodatabase/api/error.dart';
 
 class PhotodatabaseSnackBar extends StatelessWidget {
   const PhotodatabaseSnackBar({
     Key? key,
-    required this.err,
+    required this.message,
   }) : super(key: key);
 
-  final PhotoDatabaseApiError err;
+  final String message;
 
   @override
   SnackBar build(BuildContext context) {
@@ -15,7 +14,7 @@ class PhotodatabaseSnackBar extends StatelessWidget {
       dismissDirection: DismissDirection.down,
       backgroundColor: Theme.of(context).primaryColor,
       content: Text(
-        err.message,
+        message,
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.headline6,
       ),

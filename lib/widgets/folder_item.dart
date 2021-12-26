@@ -8,15 +8,11 @@ class FolderItem extends StatelessWidget {
     required this.id,
     required this.title,
     required this.description,
-    required this.createDatetime,
-    required this.lastEditDatetime,
     Key? key,
   }) : super(key: key);
   final int id;
   final String title;
   final String description;
-  final String createDatetime;
-  final String lastEditDatetime;
 
   @override
   Widget build(BuildContext context) {

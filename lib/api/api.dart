@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:http_parser/http_parser.dart';
 
-import 'package:photodatabase/api/error.dart';
+import 'package:photodatabase/api/methods.dart';
 
 class PhotoDatabaseApi {
   static const String server = "http://192.168.0.118:1116";
@@ -12,13 +12,6 @@ class PhotoDatabaseApi {
   // static const String server = "http://db-learning.ithub.ru:1116";
   static _Folders get folders => const _Folders(server);
   static _Images get images => const _Images(server);
-}
-
-__errorHandler(out) {
-  if (out.containsKey('error')) {
-    throw PhotoDatabaseApiError(out['error']);
-  }
-  return out;
 }
 
 class _Folders {
@@ -31,12 +24,17 @@ class _Folders {
       "title": title,
       "description": description,
     });
-    __errorHandler(jsonDecode(res.body));
+    errorMiddleware(jsonDecode(res.body));
   }
 
   dynamic getAll() async {
     http.Response res = await http.get(Uri.parse(server + "/api/folder"));
-    return __errorHandler(jsonDecode(res.body));
+    return errorMiddleware(jsonDecode(res.body));
+  }
+
+  Future getById(int id) async {
+    http.Response res = await http.get(Uri.parse(server + "/api/folder/$id"));
+    return errorMiddleware(jsonDecode(res.body));
   }
 }
 
@@ -47,10 +45,10 @@ class _Images {
     return server + "/api/image/$id/show";
   }
 
-  // upload(File imageFile) async {
-  //     // open a bytestream
-
-  //   }
+  Future getById(int id) async {
+    http.Response res = await http.get(Uri.parse(server + "/api/image/$id"));
+    return errorMiddleware(jsonDecode(res.body));
+  }
 
   Future<void> create(XFile xFile, String title, String description) async {
     http.MultipartRequest request = http.MultipartRequest(
@@ -72,28 +70,13 @@ class _Images {
         xFile.mimeType!.split('/')[1],
       ),
     );
-    print(file.contentType);
     request.files.add(file);
     http.StreamedResponse res = await request.send();
-    print(await res.stream.bytesToString());
-    // __errorHandler(res.);
+    errorMiddleware(await res.stream.bytesToString());
   }
-
-  // Future<void> create(String title, String description, Image image) async {
-  //   var formData = FormData();
-  //   formData.append('file', MapEntry("Picture", await MultipartFile.fromFile(data.foto.path, filename: "pic-name.png"), ))
-
-  //   http.Response res =
-  //       await http.post(Uri.parse(server + "/api/folder"), body: {
-  //     "title": title,
-  //     "description": description,
-  //     "file": image,
-  //   });
-  //   __errorHandler(jsonDecode(res.body));
-  // }
 
   dynamic getAll() async {
     http.Response res = await http.get(Uri.parse(server + "/api/image"));
-    return __errorHandler(jsonDecode(res.body));
+    return errorMiddleware(jsonDecode(res.body));
   }
 }
