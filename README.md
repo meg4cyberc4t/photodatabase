@@ -1,16 +1,28 @@
 # photodatabase
+В данном репозитории храниться Frontend проекта `photodatabase`. 
+*Главный спонсор данного проекта: Человеческое любопытство.* 
+Вы можете ознакомиться с серверной частью проекта по ссылке ниже.
+https://github.com/meg4cyberc4t/photodatabase_longpolling_api
 
-A new Flutter project.
+#### Небольшие кадры из проекта
+![flutter_06](/assets/flutter_06.png)
+![flutter_02](/assets/flutter_02.png)
+![flutter_03](/assets/flutter_03.png)
+![flutter_04](/assets/flutter_04.png)
+![flutter_08](/assets/flutter_08.png)
+![flutter_10](/assets/flutter_10.png)
 
-## Getting Started
+#### Этим проектом я хотел опробовать следующие пункты:
 
-This project is a starting point for a Flutter application.
+**Flutter Web**
+До этого я работал с Flutter только как разработка мобильных приложений.
+Можно сказать, что структура самого приложения примерно одинаковая, но есть нативные трудности. Так, например, очень сильно усложняется работа с файлами, поскольку `dart:io` не работает в Web.
+Важно уточнить, что я не опробовал весь Web, а лишь малую часть. Мне очень хочется поработать с html и попробовать использовать dart как конкурент javascript, но уже в следующих проектах...)
 
-A few resources to get you started if this is your first Flutter project:
+**Longpolling API**
+Интересно было реализовать longpolling в рамках Python и базовых инструментов программирования. 
+Важная ремарка: на обоих сторонах разработки LP был реализован "колхозным" и максимально понятным методом. 
+Так же стоит обратить внимание, что нет идеального метода для получения данных. В этом приложении websocket был бы куда эффективнее, но с ним эксперименты уже проводил. Абстрагируйтесь от своей ситуации, количестве и частоте данных.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**Multithreaded asynchronous flask**
+Очень большая часть времени ушла на реализацию работы с базой данных в асинхронном режиме. Мне не понравилось. Для таких прототипов flask удобен, но использование его в серьёзных коммерческих целях я не вижу.

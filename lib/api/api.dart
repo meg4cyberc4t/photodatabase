@@ -8,8 +8,6 @@ import 'package:photodatabase/api/methods.dart';
 
 class PhotoDatabaseApi {
   static const String server = "http://192.168.0.118:1116";
-  // static const String server = "http://192.168.1.71:1116";
-  // static const String server = "http://db-learning.ithub.ru:1116";
   static _Folders get folders => const _Folders(server);
   static _Images get images => const _Images(server);
 }
